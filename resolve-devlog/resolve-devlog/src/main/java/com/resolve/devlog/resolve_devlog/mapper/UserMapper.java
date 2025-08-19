@@ -22,7 +22,8 @@ public class UserMapper {
             userDto.getName(),
             userDto.getEmail(),
             userDto.getPassword(),
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            null
         );
     }
 }
