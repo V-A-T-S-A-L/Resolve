@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/project/**").permitAll()
                 .requestMatchers("/api/members/**").permitAll()
+                .requestMatchers("/api/join-request/**").permitAll()
                 .anyRequest().authenticated()
             );
         
