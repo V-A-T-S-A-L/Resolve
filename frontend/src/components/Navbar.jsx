@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import logo from '../assets/r-logo.png';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+
+    const navigate = useNavigate();
+
+    const checkAuth = () => {
+        if(localStorage.getItem("user")) {
+            //todo
+        } else {
+            navigate('/auth');
+        }
+    }
 
     return (
         <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-50 max-w-5xl w-full px-6 rounded-2xl bg-transparent backdrop-blur-xs border-b border-white/50 shadow-lg">
@@ -32,7 +42,7 @@ export default function Navbar() {
                             </a>
                         )
                     )}
-                    <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full shadow-lg hover:opacity-90 transition">
+                    <button onClick={checkAuth} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full shadow-lg hover:opacity-90 transition">
                         Get Started
                     </button>
                 </div>
