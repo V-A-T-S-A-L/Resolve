@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
+import { getProjectsByUserService } from "../services/ProjectService";
 
 export default function MyProjectsPage() {
 
@@ -11,26 +12,40 @@ export default function MyProjectsPage() {
         navigate('/');
     }
 
-    const projects = [
-        {
-            id: 1,
-            title: "AI-Powered Journal",
-            description: "A devlog that tracks bugs and features using AI suggestions.",
-            createdAt: "2025-08-01",
-        },
-        {
-            id: 2,
-            title: "Resolve Platform",
-            description: "A collaborative devlog journal for managing projects seamlessly.",
-            createdAt: "2025-07-20",
-        },
-        {
-            id: 3,
-            title: "Neon UI Kit",
-            description: "A reusable glowing UI component kit for React + Tailwind.",
-            createdAt: "2025-07-10",
-        },
-    ];
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.id;
+    
+    useEffect(() => {
+        if (!user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
+
+    const [projects, setProjects] = useState([]);
+
+
+    useEffect(() => {
+        getProjectsByUserService(userId).then((response) => {
+            setProjects(response.data);
+        }).catch(() => {
+            console.error("Error fetching projects");
+        })
+    }, [userId]);
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+
+        return date.toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            day: "2-digit",
+            month: "numeric",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        });
+    }
+
 
     return (
         <div className="min-h-screen bg-black text-zinc-200 px-6 py-10">
@@ -54,7 +69,7 @@ export default function MyProjectsPage() {
             </nav>
             {/* Header */}
             <div className="text-center mb-10 mt-20">
-                <h1 className="text-2xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 drop-shadow-lg">
+                <h1 className="text-2xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400">
                     My Projects
                 </h1>
                 <p className="mt-6 text-zinc-400">
@@ -67,19 +82,19 @@ export default function MyProjectsPage() {
                 {projects.map((project) => (
                     <div
                         key={project.id}
-                        className="group relative p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 backdrop-blur-md shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 hover:-translate-y-1"
+                        className="group relative p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
                     >
                         {/* Neon Glow Border Effect */}
                         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 blur-xl transition duration-500"></div>
 
                         <h2 className="relative text-xl font-semibold text-zinc-100 group-hover:text-cyan-300 transition">
-                            {project.title}
+                            {project.name}
                         </h2>
                         <p className="relative mt-2 text-sm text-zinc-400">
                             {project.description}
                         </p>
                         <p className="relative mt-4 text-xs text-zinc-500">
-                            Created on {project.createdAt}
+                            Created on {formatDate(project.createdAt)}
                         </p>
 
                         {/* Actions */}

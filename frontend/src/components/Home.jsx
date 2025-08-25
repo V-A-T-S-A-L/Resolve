@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Plus, FolderKanban, Users, LogOut, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { createProjectService } from "../services/ProjectService";
 
 export default function HomePage() {
 
-	const user = JSON.parse(localStorage.getItem("user"));
-	if(user == null) {
-		navigate('/');
-	}
-
 	const navigate = useNavigate();
+
+	const user = JSON.parse(localStorage.getItem("user"));
+	useEffect(() => {
+		if (!user) {
+			navigate('/');
+		}
+	}, [user, navigate]);
+
 	const [showModal, setShowModal] = useState(false);
 	const [projectName, setProjectName] = useState('');
 	const [projectDescription, setProjectDescription] = useState('');
@@ -24,19 +27,16 @@ export default function HomePage() {
 		e.preventDefault();
 		setShowModal(false);
 
-		if(projectDescription.length == 0 || projectName.length == 0) {
+		if (projectDescription.length == 0 || projectName.length == 0) {
 			return;
 		}
 
 		const body = {
-			"name" : projectName,
-			"description" : projectDescription
+			"name": projectName,
+			"description": projectDescription
 		};
 
-		console.warn(body);
-		
 		createProjectService(user?.id, body).then((response) => {
-			console.warn(response.data);
 			setProjectName("");
 			setProjectDescription("");
 		}).catch(() => {
@@ -214,7 +214,7 @@ export default function HomePage() {
 								</label>
 								<input
 									value={projectName}
-									onChange={(e) => {setProjectName(e.target.value)}}
+									onChange={(e) => { setProjectName(e.target.value) }}
 									type="text"
 									placeholder="Enter project name"
 									className="w-full px-3 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
