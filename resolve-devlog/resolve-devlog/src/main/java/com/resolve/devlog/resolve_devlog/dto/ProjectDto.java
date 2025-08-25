@@ -21,6 +21,7 @@ public class ProjectDto {
 
     private Long id;
     private String name;
+    private String description;
     private Long createdBy;
     private String createdByName;
     private LocalDateTime createdAt;

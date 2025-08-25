@@ -9,7 +9,7 @@ export default function Navbar() {
 
     const checkAuth = () => {
         if(localStorage.getItem("user")) {
-            //todo
+            navigate('/resolve')
         } else {
             navigate('/auth');
         }

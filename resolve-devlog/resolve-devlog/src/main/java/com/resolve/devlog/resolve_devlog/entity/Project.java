@@ -36,6 +36,8 @@ public class Project {
 
     private String name;
 
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
     //@JsonBackReference

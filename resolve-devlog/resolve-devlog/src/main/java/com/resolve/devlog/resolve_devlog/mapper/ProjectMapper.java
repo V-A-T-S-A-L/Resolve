@@ -13,6 +13,7 @@ public class ProjectMapper {
         return new ProjectDto(
             project.getId(),
             project.getName(),
+            project.getDescription(),
             project.getCreatedBy().getId(),
             project.getCreatedBy().getName(),
             project.getCreatedAt(),
@@ -24,6 +25,7 @@ public class ProjectMapper {
         return new Project(
             projectDto.getId(),
             projectDto.getName(),
+            projectDto.getDescription(),
             user,
             projectDto.getCreatedAt(),
             projectDto.getUpdatedAt()

@@ -12,7 +12,7 @@ export default function LandingPage() {
 
     const checkAuth = () => {
         if(localStorage.getItem("user")) {
-            //todo
+            navigate('/resolve');
         } else {
             navigate('/auth');
         }

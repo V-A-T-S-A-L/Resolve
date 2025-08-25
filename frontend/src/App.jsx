@@ -4,6 +4,7 @@ import './App.css'
 import LandingPage from './components/LandingPage'
 import AuthPage from './components/AuthPage'
 import Home from './components/Home'
+import MyProjectsPage from './components/MyProjectsPage'
 
 function App() {
 
@@ -14,7 +15,7 @@ function App() {
 					<Route path='/' element={<LandingPage />}/>
 					<Route path='/auth' element={<AuthPage />}/>
 					<Route path='/resolve' element={<Home />}/>
-
+					<Route path='/myprojects' element={<MyProjectsPage />}/>
 				</Routes>
 			</BrowserRouter>
 		</>
