@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Plus, FolderKanban, Users, LogOut, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { createProjectService } from "../services/ProjectService";
-import { receivedReqs } from "../services/JoinRequestService";
+import { deleteReq, receivedReqs } from "../services/JoinRequestService";
 import { formatDate } from "../services/funtions";
+import { AddMember } from "../services/MembersService";
 
 export default function HomePage() {
 
@@ -53,7 +54,26 @@ export default function HomePage() {
 		}).catch((error) => {
 			console.error("Error fetching invitations", error);
 		})
-	})
+	}, [user?.email]);
+
+	const acceptReq = (id, projectId) => {
+
+		const body = {
+			"projectId": projectId,
+			"userId": user?.id,
+			"role": "member"
+		};
+
+		console.warn(body);
+
+		AddMember(body).then((response) => {
+			return deleteReq(id);
+		}).then((response) => {
+			console.warn("Success");
+		}).catch((error) => {
+			console.warn("Error accepting invite", error);
+		});
+	}
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-white flex flex-col">
@@ -167,27 +187,30 @@ export default function HomePage() {
 						Project Invitations
 					</h2>
 					<div className="space-y-4">
-						{requests.map((invite, i) => (
-							<div
-								key={i}
-								className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 flex justify-between items-center 
-                hover:border-green-500 transition"
-							>
-								<div>
-									<h3 className="font-semibold">{invite.projectName}</h3>
-									<p className="text-zinc-400 text-sm">Invited by {invite.senderName} ({invite.senderEmail})</p>
-									<p className="text-zinc-400 text-sm">On {formatDate(invite.createdAt)}</p>
+						{requests.length === 0 ? (
+							<p className="text-zinc-300 text-lg bg-zinc-900/60 p-6 rounded-2xl">No pending invitations</p>
+						) :
+							(requests.map((invite, i) => (
+								<div
+									key={i}
+									className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 flex justify-between items-center 
+                					hover:border-green-500 transition"
+								>
+									<div>
+										<h3 className="font-semibold">{invite.projectName}</h3>
+										<p className="text-zinc-400 text-sm">Invited by {invite.senderName} ({invite.senderEmail})</p>
+										<p className="text-zinc-400 text-sm">On {formatDate(invite.createdAt)}</p>
+									</div>
+									<div className="flex gap-3">
+										<button onClick={(e) => { e.preventDefault(); acceptReq(invite.id, invite.projectId) }} className="px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-sm font-semibold hover:opacity-90 transition">
+											Accept
+										</button>
+										<button className="px-4 py-2 rounded-xl bg-zinc-800 text-sm font-semibold hover:bg-zinc-700 transition">
+											Decline
+										</button>
+									</div>
 								</div>
-								<div className="flex gap-3">
-									<button className="px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-sm font-semibold hover:opacity-90 transition">
-										Accept
-									</button>
-									<button className="px-4 py-2 rounded-xl bg-zinc-800 text-sm font-semibold hover:bg-zinc-700 transition">
-										Decline
-									</button>
-								</div>
-							</div>
-						))}
+							)))}
 					</div>
 				</section>
 			</main>
