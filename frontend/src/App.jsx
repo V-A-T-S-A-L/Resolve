@@ -5,6 +5,7 @@ import LandingPage from './components/LandingPage'
 import AuthPage from './components/AuthPage'
 import Home from './components/Home'
 import MyProjectsPage from './components/MyProjectsPage'
+import ProjectPage from './components/ProjectPage'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
 					<Route path='/auth' element={<AuthPage />}/>
 					<Route path='/resolve' element={<Home />}/>
 					<Route path='/myprojects' element={<MyProjectsPage />}/>
+					<Route path='/project/:projectId' element={<ProjectPage />}/>
 				</Routes>
 			</BrowserRouter>
 		</>
