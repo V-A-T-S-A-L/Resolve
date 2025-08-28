@@ -12,8 +12,11 @@ public class JoinRequestMapper {
         return new JoinRequestDto(
             joinRequest.getId(),
             joinRequest.getSender().getEmail(),
+            joinRequest.getSender().getName(),
             joinRequest.getReceiver().getEmail(),
+            joinRequest.getReceiver().getName(),
             joinRequest.getProject().getId(),
+            joinRequest.getProject().getName(),
             joinRequest.getCreatedAt()
         );
     }

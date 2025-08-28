@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { getProjectsByUserService } from "../services/ProjectService";
+import { formatDate } from "../services/funtions";
 
 export default function MyProjectsPage() {
 
@@ -31,21 +32,6 @@ export default function MyProjectsPage() {
             console.error("Error fetching projects");
         })
     }, [userId]);
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-
-        return date.toLocaleString("en-IN", {
-            timeZone: "Asia/Kolkata",
-            day: "2-digit",
-            month: "numeric",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true
-        });
-    }
-
 
     return (
         <div className="min-h-screen bg-black text-zinc-200 px-6 py-10">
