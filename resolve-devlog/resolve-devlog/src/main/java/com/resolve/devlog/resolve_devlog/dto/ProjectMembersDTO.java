@@ -17,6 +17,7 @@ public class ProjectMembersDTO {
     private Long projectId;
     private Long userId;
     private String userName;
+    private String email;
     private String role;
     private LocalDateTime joinedAt;
 }

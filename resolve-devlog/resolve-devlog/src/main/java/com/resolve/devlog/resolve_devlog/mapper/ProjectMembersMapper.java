@@ -16,6 +16,7 @@ public class ProjectMembersMapper {
             projectMembers.getProject().getId(),
             projectMembers.getUser().getId(),
             projectMembers.getUser().getName(),
+            projectMembers.getUser().getEmail(),
             projectMembers.getRole(),
             projectMembers.getJoinedAt()
         );
