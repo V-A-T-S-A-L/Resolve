@@ -11,10 +11,12 @@ import {
 import { useParams } from "react-router-dom";
 import { GetProjectMembers } from "../../services/MembersService";
 import { formatDate } from "../../services/funtions";
+import { sendReq } from "../../services/JoinRequestService";
 
 export default function MembersTab() {
 
 	const projectId = useParams().projectId;
+	const user = JSON.parse(localStorage.getItem("user"));
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [inviteEmail, setInviteEmail] = useState("");
@@ -29,11 +31,27 @@ export default function MembersTab() {
 		})
 	}, [projectId]);
 
-	const handleSendInvite = () => {
+	const handleSendInvite = (e) => {
+		e.preventDefault();
 		if (!inviteEmail.trim()) return;
-		console.log("Send invite to:", inviteEmail); // later connect to backend
-		setInviteEmail("");
-		setIsModalOpen(false);
+		
+		const senderEmail = user?.email;
+
+		const body = {
+			senderEmail,
+			"receiverEmail" : inviteEmail,
+			projectId
+		};
+
+		console.warn(body);
+		
+		sendReq(body).then((response) => {
+			setIsModalOpen(false);
+			setInviteEmail("");
+			console.warn("Request sent successfully");
+		}).catch((error) => {
+			console.error("Error sending request", error);
+		});
 	};
 
 	return (

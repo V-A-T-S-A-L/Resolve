@@ -15,7 +15,7 @@ export default function MyProjectsPage() {
 
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?.id;
-    
+
     useEffect(() => {
         if (!user) {
             navigate('/');
@@ -85,9 +85,11 @@ export default function MyProjectsPage() {
 
                         {/* Actions */}
                         <div className="relative mt-5 flex gap-3">
-                            <button className="px-4 py-2 text-sm rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md hover:shadow-cyan-400/40 transition">
-                                Open
-                            </button>
+                            <Link to={`/project/${project.id}`}>
+                                <button className="px-4 py-2 text-sm rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md hover:shadow-cyan-400/40 transition">
+                                    Open
+                                </button>
+                            </Link>
                             <button className="px-4 py-2 text-sm rounded-lg bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md hover:shadow-pink-400/40 transition">
                                 Manage
                             </button>

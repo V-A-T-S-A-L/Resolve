@@ -43,6 +43,19 @@ export default function HomePage() {
 		createProjectService(user?.id, body).then((response) => {
 			setProjectName("");
 			setProjectDescription("");
+
+			const projectId = response.data.id;
+			const userId = user.id;
+
+			const memberBody = {
+				projectId,
+				userId,
+				"role" : "admin"
+			};
+
+			return AddMember(memberBody);
+		}).then((response) => {
+			console.warn("Room created successfully");
 		}).catch(() => {
 			console.error("Error creating project");
 		})
