@@ -14,6 +14,8 @@ public class ProjectMembersMapper {
         return new ProjectMembersDTO(
             projectMembers.getId(),
             projectMembers.getProject().getId(),
+            projectMembers.getProject().getName(),
+            projectMembers.getProject().getDescription(),
             projectMembers.getUser().getId(),
             projectMembers.getUser().getName(),
             projectMembers.getUser().getEmail(),

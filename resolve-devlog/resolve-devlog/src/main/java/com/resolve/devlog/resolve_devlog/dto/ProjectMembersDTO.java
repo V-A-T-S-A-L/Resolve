@@ -15,6 +15,8 @@ public class ProjectMembersDTO {
 
     private Long id;
     private Long projectId;
+    private String projectName;
+    private String projectDescription;
     private Long userId;
     private String userName;
     private String email;

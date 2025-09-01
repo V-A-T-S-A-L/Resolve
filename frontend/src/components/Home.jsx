@@ -161,18 +161,20 @@ export default function HomePage() {
 						</div>
 					</Link>
 
-					<div
-						className="p-6 rounded-2xl bg-zinc-900 backdrop-blur border border-zinc-800 hover:border-green-500 
-              hover:shadow-lg hover:shadow-green-500/20 transition transform hover:-translate-y-1 cursor-pointer group"
-					>
+					<Link to={'/joinedprojects'}>
 						<div
-							className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center text-white mb-4 group-hover:scale-110 transition"
+							className="p-6 rounded-2xl bg-zinc-900 backdrop-blur border border-zinc-800 hover:border-green-500 
+						hover:shadow-lg hover:shadow-green-500/20 transition transform hover:-translate-y-1 cursor-pointer group"
 						>
-							<Users size={24} />
+							<div
+								className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center text-white mb-4 group-hover:scale-110 transition"
+							>
+								<Users size={24} />
+							</div>
+							<h3 className="text-lg font-semibold">Joined Projects</h3>
+							<p className="text-zinc-400 mt-2 text-sm">Collaborate with your team.</p>
 						</div>
-						<h3 className="text-lg font-semibold">Joined Projects</h3>
-						<p className="text-zinc-400 mt-2 text-sm">Collaborate with your team.</p>
-					</div>
+					</Link>
 				</section>
 
 				{/* Projects Section */}

@@ -6,6 +6,7 @@ import AuthPage from './components/AuthPage'
 import Home from './components/Home'
 import MyProjectsPage from './components/MyProjectsPage'
 import ProjectPage from './components/ProjectPage'
+import JoinedProjectPage from './components/JoinedProjectPage'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
 					<Route path='/auth' element={<AuthPage />}/>
 					<Route path='/resolve' element={<Home />}/>
 					<Route path='/myprojects' element={<MyProjectsPage />}/>
+					<Route path='/joinedprojects' element={<JoinedProjectPage />}/>
 					<Route path='/project/:projectId' element={<ProjectPage />}/>
 				</Routes>
 			</BrowserRouter>
