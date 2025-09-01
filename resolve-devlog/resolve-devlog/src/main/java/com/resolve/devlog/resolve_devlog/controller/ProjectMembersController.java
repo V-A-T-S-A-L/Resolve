@@ -56,6 +56,16 @@ public class ProjectMembersController {
         }
     }
 
+    @GetMapping("/check-member/{projectId}/{userId}")
+    public ResponseEntity<?> checkMember(@PathVariable("projectId") Long projectId, @PathVariable("userId") Long userId) {
+        try {
+            boolean exists = projectMembersService.checkMember(projectId, userId);
+            return ResponseEntity.ok(exists);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/update/{memberId}")
     public ResponseEntity<?> updateMember(@PathVariable("memberId") Long memberId, @RequestBody ProjectMembersDTO projectMembersDTO) {
         try {

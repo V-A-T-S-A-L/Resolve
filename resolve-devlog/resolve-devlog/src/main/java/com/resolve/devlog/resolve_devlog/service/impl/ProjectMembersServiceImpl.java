@@ -77,4 +77,11 @@ public class ProjectMembersServiceImpl implements ProjectMembersService {
         return ProjectMembersMapper.mapToProjectMembersDTO(saved);
     }
 
+    @Override
+    public boolean checkMember(Long projectId, Long userId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        
+        return projectMembersRepository.existsByProjectAndUser(project, user);
+    }
 }

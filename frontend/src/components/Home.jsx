@@ -5,6 +5,8 @@ import { createProjectService } from "../services/ProjectService";
 import { deleteReq, receivedReqs } from "../services/JoinRequestService";
 import { formatDate } from "../services/funtions";
 import { AddMember } from "../services/MembersService";
+import Prism from "./Prism";
+import Aurora from "./Aurora";
 
 export default function HomePage() {
 
@@ -50,7 +52,7 @@ export default function HomePage() {
 			const memberBody = {
 				projectId,
 				userId,
-				"role" : "admin"
+				"role": "admin"
 			};
 
 			return AddMember(memberBody);
@@ -90,6 +92,15 @@ export default function HomePage() {
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-white flex flex-col">
+			<div className="absolute inset-0 z-0 opacity-70">
+				<Aurora
+					colorStops={["#7ab8f2", "#ff7ea1", "#7ab8f2"]}
+					blend={0.5}
+					amplitude={0.5}
+					speed={0.5}
+				/>
+			</div>
+
 			{/* Top Navbar */}
 			<nav
 				className="fixed top-5 left-1/2 -translate-x-1/2 w-[90%] md:w-4/5 z-50 
@@ -122,7 +133,7 @@ export default function HomePage() {
 					{/* Create Project - opens modal */}
 					<div
 						onClick={() => setShowModal(true)}
-						className="p-6 rounded-2xl bg-zinc-900/60 backdrop-blur border border-zinc-800 hover:border-purple-500 
+						className="p-6 rounded-2xl bg-zinc-900 backdrop-blur border border-zinc-800 hover:border-purple-500 
               hover:shadow-lg hover:shadow-purple-500/20 transition transform hover:-translate-y-1 cursor-pointer group"
 					>
 						<div
@@ -137,7 +148,7 @@ export default function HomePage() {
 					{/* Other Quick Actions */}
 					<Link to="/myprojects">
 						<div
-							className="p-6 rounded-2xl bg-zinc-900/60 backdrop-blur border border-zinc-800 hover:border-blue-500 
+							className="p-6 rounded-2xl bg-zinc-900 backdrop-blur border border-zinc-800 hover:border-blue-500 
               hover:shadow-lg hover:shadow-blue-500/20 transition transform hover:-translate-y-1 cursor-pointer group"
 						>
 							<div
@@ -151,7 +162,7 @@ export default function HomePage() {
 					</Link>
 
 					<div
-						className="p-6 rounded-2xl bg-zinc-900/60 backdrop-blur border border-zinc-800 hover:border-green-500 
+						className="p-6 rounded-2xl bg-zinc-900 backdrop-blur border border-zinc-800 hover:border-green-500 
               hover:shadow-lg hover:shadow-green-500/20 transition transform hover:-translate-y-1 cursor-pointer group"
 					>
 						<div
@@ -174,7 +185,7 @@ export default function HomePage() {
 							(proj, i) => (
 								<div
 									key={i}
-									className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-blue-500 
+									className="p-6 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-blue-500 
                 transition hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/20"
 								>
 									<h3 className="text-lg font-semibold">{proj}</h3>
