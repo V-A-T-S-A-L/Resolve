@@ -16,6 +16,7 @@ import com.resolve.devlog.resolve_devlog.mapper.JoinRequestMapper;
 import com.resolve.devlog.resolve_devlog.repository.JoinRequestRepository;
 import com.resolve.devlog.resolve_devlog.repository.ProjectRepository;
 import com.resolve.devlog.resolve_devlog.repository.UserRepository;
+import com.resolve.devlog.resolve_devlog.service.EmailService;
 import com.resolve.devlog.resolve_devlog.service.JoinRequestService;
 
 @Service
@@ -29,6 +30,9 @@ public class JoinRequestServiceImpl implements JoinRequestService{
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public JoinRequestDto addRequest(Long projectId, String senderEmail, String receiverEmail) {
@@ -47,6 +51,9 @@ public class JoinRequestServiceImpl implements JoinRequestService{
         joinRequest.setCreatedAt(LocalDateTime.now());
 
         JoinRequest saved = joinRequestRepository.save(joinRequest);
+
+        emailService.sendInvite(receiverEmail, project.getName(), senderEmail);
+
         return JoinRequestMapper.mapToJoinRequestDto(saved);
     }
 

@@ -16,6 +16,7 @@ import com.resolve.devlog.resolve_devlog.mapper.ProjectMembersMapper;
 import com.resolve.devlog.resolve_devlog.repository.ProjectMembersRepository;
 import com.resolve.devlog.resolve_devlog.repository.ProjectRepository;
 import com.resolve.devlog.resolve_devlog.repository.UserRepository;
+import com.resolve.devlog.resolve_devlog.service.EmailService;
 import com.resolve.devlog.resolve_devlog.service.ProjectMembersService;
 
 @Service

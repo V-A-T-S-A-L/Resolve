@@ -92,7 +92,7 @@ export default function HomePage() {
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-white flex flex-col">
-			<div className="absolute inset-0 z-0 opacity-70">
+			<div className="absolute inset-0 z-0 opacity-70 pointer-events-none">
 				<Aurora
 					colorStops={["#7ab8f2", "#ff7ea1", "#7ab8f2"]}
 					blend={0.5}
@@ -129,7 +129,10 @@ export default function HomePage() {
 			{/* Main Content */}
 			<main className="flex-1 mt-28 px-6 max-w-7xl mx-auto w-full space-y-20">
 				{/* Quick Actions */}
-				<section className="grid md:grid-cols-3 gap-8">
+				<h2 className="text-2xl font-bold mb-6 z-10 absolute bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+					Welcome back {user.name}
+				</h2>
+				<section className="grid md:grid-cols-3 gap-8 mt-14">
 					{/* Create Project - opens modal */}
 					<div
 						onClick={() => setShowModal(true)}
