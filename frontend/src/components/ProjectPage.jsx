@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useEffect, useState } from "react";
 import Tabs from "./project/Tabs";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { checkMember } from "../services/MembersService";
+import { checkMember, getRole } from "../services/MembersService";
 
 const OverviewTab = lazy(() => import("./project/OverviewTab"));
 const BugsTab = lazy(() => import("./project/BugsTab"));
@@ -30,6 +30,16 @@ export default function ProjectDashboard() {
 		}).catch((error) => {
 			console.error(error);
 		});
+	}, [projectId, userId]);
+
+	const [role, setRole] = useState("");
+
+	useEffect(() => {
+		getRole(projectId, userId).then((response) => {
+			setRole(response.data);
+		}).catch((error) => {
+			console.error("Error fetching role", error);
+		}) 
 	}, [projectId, userId]);
 
 	const [activeTab, setActiveTab] = useState("overview");
@@ -74,11 +84,11 @@ export default function ProjectDashboard() {
 						</div>
 					}
 				>
-					{activeTab === "overview" && <OverviewTab />}
-					{activeTab === "bugs" && <BugsTab />}
-					{activeTab === "members" && <MembersTab />}
-					{activeTab === "activity" && <ActivityTab />}
-					{activeTab === "settings" && <SettingsTab />}
+					{activeTab === "overview" && <OverviewTab role={role} />}
+					{activeTab === "bugs" && <BugsTab role={role} />}
+					{activeTab === "members" && <MembersTab role={role} />}
+					{activeTab === "activity" && <ActivityTab role={role} />}
+					{activeTab === "settings" && <SettingsTab role={role} />}
 				</Suspense>
 			</main>
 		</div>

@@ -12,4 +12,5 @@ public interface ProjectMembersService {
     ProjectMembersDTO updateMember(Long id, ProjectMembersDTO projectMembersDTO);
     void removeMember(Long projectId, Long userId);
     boolean checkMember(Long projectId, Long userId);
+    String getRole(Long projectId, Long userId);
 }

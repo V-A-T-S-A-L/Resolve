@@ -66,6 +66,16 @@ public class ProjectMembersController {
         }
     }
 
+    @GetMapping("/get-role/{projectId}/{userId}")
+    public ResponseEntity<?> getRole(@PathVariable("projectId") Long projectId, @PathVariable("userId") Long userId) {
+        try {
+            String role = projectMembersService.getRole(projectId, userId);
+            return ResponseEntity.ok(role);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/update/{memberId}")
     public ResponseEntity<?> updateMember(@PathVariable("memberId") Long memberId, @RequestBody ProjectMembersDTO projectMembersDTO) {
         try {

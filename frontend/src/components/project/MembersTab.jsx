@@ -13,7 +13,7 @@ import { GetProjectMembers } from "../../services/MembersService";
 import { formatDate } from "../../services/funtions";
 import { sendReq } from "../../services/JoinRequestService";
 
-export default function MembersTab() {
+export default function MembersTab({ role }) {
 
 	const projectId = useParams().projectId;
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -34,17 +34,17 @@ export default function MembersTab() {
 	const handleSendInvite = (e) => {
 		e.preventDefault();
 		if (!inviteEmail.trim()) return;
-		
+
 		const senderEmail = user?.email;
 
 		const body = {
 			senderEmail,
-			"receiverEmail" : inviteEmail,
+			"receiverEmail": inviteEmail,
 			projectId
 		};
 
 		console.warn(body);
-		
+
 		sendReq(body).then((response) => {
 			setIsModalOpen(false);
 			setInviteEmail("");
@@ -61,12 +61,14 @@ export default function MembersTab() {
 				<h2 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-400 flex items-center gap-2 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]">
 					<Users className="h-5 w-5" /> Project Members
 				</h2>
-				<button
-					onClick={() => setIsModalOpen(true)}
-					className="px-4 py-2 bg-gradient-to-r from-pink-500/20 to-blue-500/20 text-pink-400 rounded-lg hover:from-pink-500/30 hover:to-blue-500/30 transition flex items-center gap-2 border border-pink-500/30"
-				>
-					<UserPlus className="h-4 w-4" /> Invite Member
-				</button>
+				{role === "admin" && (
+					<button
+						onClick={() => setIsModalOpen(true)}
+						className="px-4 py-2 bg-gradient-to-r from-pink-500/20 to-blue-500/20 text-pink-400 rounded-lg hover:from-pink-500/30 hover:to-blue-500/30 transition flex items-center gap-2 border border-pink-500/30"
+					>
+						<UserPlus className="h-4 w-4" /> Invite Member
+					</button>
+				)}
 			</div>
 
 			{/* Members List */}

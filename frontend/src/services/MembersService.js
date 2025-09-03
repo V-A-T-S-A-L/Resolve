@@ -7,3 +7,5 @@ export const GetProjectMembers = (projectId) => axios.get(`http://localhost:8080
 export const checkMember = (projectId, userId) => axios.get(`http://localhost:8080/api/members/check-member/${projectId}/${userId}`);
 
 export const getProjectsWhereMember = (userId) => axios.get(`http://localhost:8080/api/members/projects/${userId}`);
+
+export const getRole = (projectId, userId) => axios.get(`http://localhost:8080/api/members/get-role/${projectId}/${userId}`);

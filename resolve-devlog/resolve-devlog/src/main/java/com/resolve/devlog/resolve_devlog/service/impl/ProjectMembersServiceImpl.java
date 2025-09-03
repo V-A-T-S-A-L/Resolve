@@ -84,4 +84,12 @@ public class ProjectMembersServiceImpl implements ProjectMembersService {
         
         return projectMembersRepository.existsByProjectAndUser(project, user);
     }
+
+    @Override
+    public String getRole(Long projectId, Long userId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        return projectMembersRepository.findRoleByProjectAndUser(project, user);
+    }
 }
