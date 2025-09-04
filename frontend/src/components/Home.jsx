@@ -6,6 +6,7 @@ import { deleteReq, receivedReqs } from "../services/JoinRequestService";
 import { formatDate } from "../services/funtions";
 import { AddMember } from "../services/MembersService";
 import { motion } from "framer-motion";
+import Navbar2 from "./Navbar2";
 
 export default function HomePage() {
 	const navigate = useNavigate();
@@ -66,33 +67,7 @@ export default function HomePage() {
 			{/* Background overlay for subtle noise */}
 			{/* <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 pointer-events-none" /> */}
 
-			{/* Navbar */}
-			<nav className="fixed top-5 left-1/2 -translate-x-1/2 w-[90%] md:w-4/5 z-50 
-        bg-zinc-900/70 backdrop-blur-lg border border-zinc-800 rounded-2xl px-6 py-3 
-        flex items-center justify-between shadow-lg">
-				<Link to={"/"}>
-					<h2 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 text-xl">
-						Resolve
-					</h2>
-				</Link>
-				<div className="flex gap-6 items-center text-zinc-300 text-sm">
-					{["Dashboard", "Projects", "Invites", "Profile"].map((tab, i) => (
-						<button
-							key={i}
-							className="relative group hover:text-purple-400 transition"
-						>
-							{tab}
-							<span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-purple-500 transition-all group-hover:w-full"></span>
-						</button>
-					))}
-					<button
-						onClick={logout}
-						className="hover:text-red-400 transition flex items-center gap-1"
-					>
-						<LogOut size={16} /> Logout
-					</button>
-				</div>
-			</nav>
+			<Navbar2 logout={logout} />
 
 			{/* Main Content */}
 			<main className="flex-1 mt-28 px-6 max-w-7xl mx-auto w-full space-y-20">
