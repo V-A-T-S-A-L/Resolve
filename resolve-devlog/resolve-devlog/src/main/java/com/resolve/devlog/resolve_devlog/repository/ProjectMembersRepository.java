@@ -15,6 +15,7 @@ public interface ProjectMembersRepository extends JpaRepository<ProjectMembers, 
     List<ProjectMembers> findByUser(User user);
     Optional<ProjectMembers> findByProjectAndUser(Project project, User user);
     boolean existsByProjectAndUser(Project project, User user);
+    List<ProjectMembers> findTop3ByUserOrderByJoinedAtDesc(User user);
 
     @Query("SELECT pm.role FROM ProjectMembers pm WHERE pm.project = :project AND pm.user = :user")
     String findRoleByProjectAndUser(Project project, User user);

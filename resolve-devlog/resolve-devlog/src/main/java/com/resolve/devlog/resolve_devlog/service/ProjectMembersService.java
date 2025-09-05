@@ -13,4 +13,5 @@ public interface ProjectMembersService {
     void removeMember(Long projectId, Long userId);
     boolean checkMember(Long projectId, Long userId);
     String getRole(Long projectId, Long userId);
+    List<ProjectMembersDTO> getRecentProjects(Long userId);
 }

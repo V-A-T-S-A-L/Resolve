@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createProjectService } from "../services/ProjectService";
 import { deleteReq, receivedReqs } from "../services/JoinRequestService";
 import { formatDate } from "../services/funtions";
-import { AddMember } from "../services/MembersService";
+import { AddMember, getRecentProjects } from "../services/MembersService";
 import { motion } from "framer-motion";
 import Navbar2 from "./Navbar2";
 
@@ -20,6 +20,7 @@ export default function HomePage() {
 	const [projectName, setProjectName] = useState("");
 	const [projectDescription, setProjectDescription] = useState("");
 	const [requests, setRequests] = useState([]);
+	const [recentProjects, setRecentProjects] = useState([]);
 
 	const logout = () => {
 		localStorage.removeItem("user");
@@ -51,6 +52,14 @@ export default function HomePage() {
 			.then((res) => setRequests(res.data))
 			.catch((err) => console.error("Error fetching invites", err));
 	}, [user?.email]);
+
+	useEffect(() => {
+		getRecentProjects(user?.id).then((response) => {
+			setRecentProjects(response.data);
+		}).catch((error) => {
+			console.error("error fetching recent projects", error);
+		})
+	}, [user?.id]);
 
 	const acceptReq = (id, projectId) => {
 		const body = { projectId, userId: user?.id, role: "member" };
@@ -131,10 +140,10 @@ export default function HomePage() {
 				{/* Active Projects */}
 				<section>
 					<h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-						Your Active Projects
+						Your Recent Projects
 					</h2>
 					<div className="grid md:grid-cols-3 gap-8">
-						{["AI Chatbot", "E-commerce Tracker", "Game Dev Toolkit"].map(
+						{recentProjects.map(
 							(proj, i) => (
 								<motion.div
 									key={i}
@@ -144,17 +153,15 @@ export default function HomePage() {
 									className="p-6 rounded-2xl bg-zinc-900/70 border border-zinc-800 hover:border-blue-500 
                     transition hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/20"
 								>
-									<h3 className="text-lg font-semibold">{proj}</h3>
+									<h3 className="text-lg font-semibold">{proj.projectName}</h3>
 									<p className="text-sm text-zinc-400 mt-2">
-										{i === 0
-											? "AI-powered assistant for customer support."
-											: i === 1
-												? "Track inventory & analytics with ease."
-												: "Tools & docs for indie game developers."}
+										{proj.projectDescription}
 									</p>
-									<button className="mt-4 text-sm font-semibold text-blue-400 hover:underline">
-										Open →
-									</button>
+									<Link to={`/project/${proj.projectId}`}>
+										<button className="mt-4 text-sm font-semibold text-blue-400 hover:underline">
+											Open →
+										</button>
+									</Link>
 								</motion.div>
 							)
 						)}

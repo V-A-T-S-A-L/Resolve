@@ -76,6 +76,16 @@ public class ProjectMembersController {
         }
     }
 
+    @GetMapping("/get-recent-projects/{userId}")
+    public ResponseEntity<?> getRecentProjects(@PathVariable("userId") Long userId) {
+        try {
+            List<ProjectMembersDTO> recent = projectMembersService.getRecentProjects(userId);
+            return ResponseEntity.ok(recent);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/update/{memberId}")
     public ResponseEntity<?> updateMember(@PathVariable("memberId") Long memberId, @RequestBody ProjectMembersDTO projectMembersDTO) {
         try {

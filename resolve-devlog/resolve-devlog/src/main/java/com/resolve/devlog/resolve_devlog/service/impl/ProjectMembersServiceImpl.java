@@ -61,6 +61,12 @@ public class ProjectMembersServiceImpl implements ProjectMembersService {
     }
 
     @Override
+    public List<ProjectMembersDTO> getRecentProjects(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return projectMembersRepository.findTop3ByUserOrderByJoinedAtDesc(user).stream().map((p) -> ProjectMembersMapper.mapToProjectMembersDTO(p)).collect(Collectors.toList());
+    } 
+
+    @Override
     public void removeMember(Long projectId, Long userId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Project not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
