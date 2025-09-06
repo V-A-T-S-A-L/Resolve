@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/project/**").permitAll()
                 .requestMatchers("/api/members/**").permitAll()
                 .requestMatchers("/api/join-request/**").permitAll()
+                .requestMatchers("/api/devlogs/**").permitAll()
                 .anyRequest().authenticated()
             );
         
