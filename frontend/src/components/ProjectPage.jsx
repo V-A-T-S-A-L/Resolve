@@ -3,6 +3,7 @@ import Tabs from "./project/Tabs";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { checkMember, getRole } from "../services/MembersService";
+import DevlogsTab from "./project/DevlogsTab";
 
 const OverviewTab = lazy(() => import("./project/OverviewTab"));
 const BugsTab = lazy(() => import("./project/BugsTab"));
@@ -47,6 +48,7 @@ export default function ProjectDashboard() {
 	const tabs = [
 		{ id: "overview", label: "Overview" },
 		{ id: "bugs", label: "Bugs" },
+		{ id: "devlogs", label: "Devlogs" },
 		{ id: "members", label: "Members" },
 		{ id: "activity", label: "Activity" },
 		{ id: "settings", label: "Settings" },
@@ -86,6 +88,7 @@ export default function ProjectDashboard() {
 				>
 					{activeTab === "overview" && <OverviewTab role={role} />}
 					{activeTab === "bugs" && <BugsTab role={role} />}
+					{activeTab === "devlogs" && <DevlogsTab role={role} />}
 					{activeTab === "members" && <MembersTab role={role} />}
 					{activeTab === "activity" && <ActivityTab role={role} />}
 					{activeTab === "settings" && <SettingsTab role={role} />}

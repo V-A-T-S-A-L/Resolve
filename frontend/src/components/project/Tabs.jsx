@@ -1,10 +1,11 @@
 import React from "react";
-import { Bug, Settings, LayoutDashboard, Users, Activity } from "lucide-react";
+import { Bug, Settings, LayoutDashboard, Users, Activity, MessageSquareCode } from "lucide-react";
 
 export default function Tabs({ tabs, activeTab, setActiveTab }) {
   const icons = {
     overview: <LayoutDashboard size={18} />,
     bugs: <Bug size={18} />,
+    devlogs : <MessageSquareCode size={18}/>,
     members: <Users size={18} />,
     activity: <Activity size={18} />,
     settings: <Settings size={18} />,
