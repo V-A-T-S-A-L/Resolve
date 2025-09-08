@@ -1,6 +1,8 @@
 package com.resolve.devlog.resolve_devlog.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,9 +59,11 @@ public class DevlogsServiceImpl implements DevlogsService{
     }
 
     @Override
-    public DevlogsDto getByProject(Long projectId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getByProject'");
+    public List<DevlogsDto> getByProject(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+
+        List<Devlogs> devlogs = devlogsRepository.findByProject(project);
+        return devlogs.stream().map((d) -> DevlogsMapper.mapToDevlogsDto(d)).collect(Collectors.toList());
     }
 
     @Override

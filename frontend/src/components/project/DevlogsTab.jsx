@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlusCircle, X } from "lucide-react";
+import { MessageSquareCode, PlusCircle, X } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function DevlogsTab({ role }) {
@@ -15,6 +15,38 @@ export default function DevlogsTab({ role }) {
         },
         {
             id: 2,
+            user: { name: "Neev Shah" },
+            title: "Project Cards",
+            content: "Implemented project cards with neon hover effects ✨",
+            createdAt: "2025-09-06T17:42:00",
+            comments: [],
+        },
+        {
+            id: 3,
+            user: { name: "Neev Shah" },
+            title: "Project Cards",
+            content: "Implemented project cards with neon hover effects ✨",
+            createdAt: "2025-09-06T17:42:00",
+            comments: [],
+        },
+        {
+            id: 4,
+            user: { name: "Neev Shah" },
+            title: "Project Cards",
+            content: "Implemented project cards with neon hover effects ✨",
+            createdAt: "2025-09-06T17:42:00",
+            comments: [],
+        },
+        {
+            id: 5,
+            user: { name: "Neev Shah" },
+            title: "Project Cards",
+            content: "Implemented project cards with neon hover effects ✨",
+            createdAt: "2025-09-06T17:42:00",
+            comments: [],
+        },
+        {
+            id: 6,
             user: { name: "Neev Shah" },
             title: "Project Cards",
             content: "Implemented project cards with neon hover effects ✨",
@@ -68,7 +100,7 @@ export default function DevlogsTab({ role }) {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-400 flex items-center gap-2 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]">
-                    Devlogs
+                    <MessageSquareCode className="w-5 h-4 text-pink-400" /> Devlogs
                 </h2>
                 {/* Button to open new devlog modal */}
                 {(role === "admin" || role === "manager" || role === "contributor") && (
@@ -82,16 +114,16 @@ export default function DevlogsTab({ role }) {
             </div>
 
             {/* Devlogs List */}
-            <div className="grid gap-6 md:grid-cols-1">
+            <div className="grid gap-3 md:grid-cols-1">
                 {devlogs.length > 0 ? (
                     devlogs.map((log) => (
                         <div
                             key={log.id}
-                            className="relative p-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 backdrop-blur-md transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/20 cursor-pointer"
+                            className="relative p-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 backdrop-blur-md transition-all hover:scale-101 hover:border-green-500 cursor-pointer"
                             style={{ height: "100px", overflow: "hidden" }}
                             onClick={() => setSelectedLog(log)}
                         >
-                            <h4 className="text-sm font-semibold text-zinc-300">{log.title}</h4>
+                            <h4 className="text-md font-semibold text-zinc-300">{log.title}</h4>
                             <p className="mt-1 text-xs text-zinc-400">{log.user.name}</p>
                             <p className="mt-1 text-xs text-zinc-500">{new Date(log.createdAt).toLocaleString()}</p>
                         </div>

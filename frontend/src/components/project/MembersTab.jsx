@@ -59,12 +59,12 @@ export default function MembersTab({ role }) {
 			{/* Header */}
 			<div className="flex items-center justify-between">
 				<h2 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-400 flex items-center gap-2 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]">
-					<Users className="h-5 w-5" /> Project Members
+					<Users className="h-5 w-5 text-pink-400" /> Project Members
 				</h2>
 				{role === "admin" && (
 					<button
 						onClick={() => setIsModalOpen(true)}
-						className="px-4 py-2 bg-gradient-to-r from-pink-500/20 to-blue-500/20 text-pink-400 rounded-lg hover:from-pink-500/30 hover:to-blue-500/30 transition flex items-center gap-2 border border-pink-500/30"
+						className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white flex items-center gap-2 hover:shadow-lg hover:shadow-pink-500/30 transition"
 					>
 						<UserPlus className="h-4 w-4" /> Invite Member
 					</button>

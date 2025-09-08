@@ -9,5 +9,5 @@ import com.resolve.devlog.resolve_devlog.entity.Devlogs;
 import com.resolve.devlog.resolve_devlog.entity.Project;
 
 public interface DevlogsRepository extends JpaRepository<Devlogs, Long> {
-    List<DevlogsDto> findByProject(Project project);
+    List<Devlogs> findByProject(Project project);
 }
