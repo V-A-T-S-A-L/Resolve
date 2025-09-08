@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.resolve.devlog.resolve_devlog.dto.DevlogsDto;
 import com.resolve.devlog.resolve_devlog.service.DevlogsService;
@@ -35,12 +36,15 @@ public class DevlogsController {
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<?> getByProject(@PathVariable("projectId") Long projectId) {
+    public ResponseEntity<?> getByProject(
+            @PathVariable("projectId") Long projectId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
         try {
-            List<DevlogsDto> devlogsDto = devlogsService.getByProject(projectId);
-            return ResponseEntity.ok(devlogsDto);
+            return ResponseEntity.ok(devlogsService.getByProject(projectId, page, size));
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 }

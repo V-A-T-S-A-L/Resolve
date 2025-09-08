@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.resolve.devlog.resolve_devlog.dto.DevlogsDto;
@@ -59,11 +61,11 @@ public class DevlogsServiceImpl implements DevlogsService{
     }
 
     @Override
-    public List<DevlogsDto> getByProject(Long projectId) {
+    public Page<DevlogsDto> getByProject(Long projectId, int page, int size) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Project not found"));
 
-        List<Devlogs> devlogs = devlogsRepository.findByProject(project);
-        return devlogs.stream().map((d) -> DevlogsMapper.mapToDevlogsDto(d)).collect(Collectors.toList());
+        Page<Devlogs> devlogs = devlogsRepository.findByProject(project, PageRequest.of(page, size));
+        return devlogs.map(DevlogsMapper::mapToDevlogsDto);
     }
 
     @Override
