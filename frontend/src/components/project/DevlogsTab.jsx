@@ -1,117 +1,72 @@
-import { useState } from "react";
-import { MessageSquareCode, PlusCircle, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, MessageSquareCode, PlusCircle, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { createDevlog, getByProject } from "../../services/DevlogsService";
+import { useParams } from "react-router-dom";
 
 export default function DevlogsTab({ role }) {
-    // Dummy data
-    const [devlogs, setDevlogs] = useState([
-        {
-            id: 1,
-            user: { name: "Vatsal Shah" },
-            title: "Navbar Fixes",
-            content: "Fixed navbar responsiveness and added role-based access 🔧",
-            createdAt: "2025-09-05T10:15:00",
-            comments: [{ id: 1, user: "Neev", text: "Great work!" }],
-        },
-        {
-            id: 2,
-            user: { name: "Neev Shah" },
-            title: "Project Cards",
-            content: "Implemented project cards with neon hover effects ✨",
-            createdAt: "2025-09-06T17:42:00",
-            comments: [],
-        },
-        {
-            id: 3,
-            user: { name: "Neev Shah" },
-            title: "Project Cards",
-            content: "Implemented project cards with neon hover effects ✨",
-            createdAt: "2025-09-06T17:42:00",
-            comments: [],
-        },
-        {
-            id: 4,
-            user: { name: "Neev Shah" },
-            title: "Project Cards",
-            content: "Implemented project cards with neon hover effects ✨",
-            createdAt: "2025-09-06T17:42:00",
-            comments: [],
-        },
-        {
-            id: 5,
-            user: { name: "Neev Shah" },
-            title: "Project Cards",
-            content: "Implemented project cards with neon hover effects ✨",
-            createdAt: "2025-09-06T17:42:00",
-            comments: [],
-        },
-        {
-            id: 6,
-            user: { name: "Neev Shah" },
-            title: "Project Cards",
-            content: "Implemented project cards with neon hover effects ✨",
-            createdAt: "2025-09-06T17:42:00",
-            comments: [],
-        },
-    ]);
+    const projectId = useParams().projectId;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.id;
+
+    const [devlogs, setDevlogs] = useState([]);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(5);
+    const [totalPages, setTotalPages] = useState(0);
 
     const [selectedLog, setSelectedLog] = useState(null);
     const [newLogModal, setNewLogModal] = useState(false);
     const [newTitle, setNewTitle] = useState("");
     const [newContent, setNewContent] = useState("");
-    const [newComment, setNewComment] = useState("");
+
+    useEffect(() => {
+        getByProject(projectId, page, size)
+            .then((response) => {
+                setDevlogs(response.data.content);
+                setTotalPages(response.data.totalPages);
+            })
+            .catch((error) => {
+                console.warn("Error fetching devlogs", error);
+            });
+    }, [projectId, page, size]);
 
     const handleAddLog = () => {
         if (!newTitle.trim() || !newContent.trim()) return;
 
-        const newEntry = {
-            id: devlogs.length + 1,
-            user: { name: "Current User" },
+        const body = {
+            userId,
+            projectId,
             title: newTitle,
-            content: newContent,
-            createdAt: new Date().toISOString(),
-            comments: [],
+            content: newContent
         };
 
-        setDevlogs([newEntry, ...devlogs]);
-        setNewTitle("");
-        setNewContent("");
-        setNewLogModal(false);
-    };
-
-    const handleAddComment = () => {
-        if (!newComment.trim() || !selectedLog) return;
-
-        const updatedLog = {
-            ...selectedLog,
-            comments: [
-                ...selectedLog.comments,
-                { id: selectedLog.comments.length + 1, user: "Current User", text: newComment },
-            ],
-        };
-
-        setDevlogs(devlogs.map((d) => (d.id === updatedLog.id ? updatedLog : d)));
-        setSelectedLog(updatedLog);
-        setNewComment("");
+        createDevlog(body).then((response) => {
+            setNewTitle("");
+            setNewContent("");
+            setNewLogModal(false);
+        }).catch((error) => {
+            console.error("error creating devlog", error);
+        })
     };
 
     return (
         <div className="space-y-8">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <h2 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-400 flex items-center gap-2 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]">
                     <MessageSquareCode className="w-5 h-4 text-pink-400" /> Devlogs
                 </h2>
-                {/* Button to open new devlog modal */}
+
                 {(role === "admin" || role === "manager" || role === "contributor") && (
                     <button
                         onClick={() => setNewLogModal(true)}
-                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white flex items-center gap-2 hover:shadow-lg hover:shadow-pink-500/30 transition"
+                        className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-pink-500/30 transition"
                     >
                         <PlusCircle size={18} /> Add New Devlog
                     </button>
                 )}
             </div>
+
 
             {/* Devlogs List */}
             <div className="grid gap-3 md:grid-cols-1">
@@ -124,13 +79,56 @@ export default function DevlogsTab({ role }) {
                             onClick={() => setSelectedLog(log)}
                         >
                             <h4 className="text-md font-semibold text-zinc-300">{log.title}</h4>
-                            <p className="mt-1 text-xs text-zinc-400">{log.user.name}</p>
-                            <p className="mt-1 text-xs text-zinc-500">{new Date(log.createdAt).toLocaleString()}</p>
+                            <p className="mt-1 text-xs text-zinc-400">{log.userName}</p>
+                            <p className="mt-1 text-xs text-zinc-500">
+                                {new Date(log.createdAt).toLocaleString()}
+                            </p>
                         </div>
                     ))
                 ) : (
                     <p className="text-zinc-500">No devlogs yet. Start logging!</p>
                 )}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="flex items-center flex-col sm:flex-row justify-between mt-4">
+                {/* Page size dropdown */}
+                <select
+                    value={size}
+                    onChange={(e) => {
+                        setSize(Number(e.target.value));
+                        setPage(0); // reset to first page on size change
+                    }}
+                    className="p-2 rounded-lg bg-zinc-800 text-white border border-zinc-700"
+                >
+                    <option value={5}>5 per page</option>
+                    <option value={10}>10 per page</option>
+                    <option value={20}>20 per page</option>
+                </select>
+
+                {/* Navigation buttons */}
+                <div className="flex items-center justify-center gap-3 mt-4 w-full">
+                    <button
+                        disabled={page === 0}
+                        onClick={() => setPage((p) => p - 1)}
+                        className="sm:w-auto px-4 py-2 rounded-lg bg-zinc-800 text-white disabled:opacity-40"
+                    >
+                        <ChevronLeft />
+                    </button>
+
+                    <span className="text-sm text-zinc-400 text-center">
+                        Page {page + 1} of {totalPages}
+                    </span>
+
+                    <button
+                        disabled={page + 1 >= totalPages}
+                        onClick={() => setPage((p) => p + 1)}
+                        className="sm:w-auto px-4 py-2 rounded-lg bg-zinc-800 text-white disabled:opacity-40"
+                    >
+                        <ChevronRight />
+                    </button>
+                </div>
+
             </div>
 
             {/* Modal for viewing devlog */}
@@ -153,40 +151,9 @@ export default function DevlogsTab({ role }) {
                         </button>
 
                         <h2 className="text-xl font-bold mb-2">{selectedLog.title}</h2>
-                        <p className="text-sm text-zinc-300 mb-4">By {selectedLog.user.name}</p>
+                        <p className="text-sm text-zinc-300 mb-4">By {selectedLog.userName}</p>
                         <p className="text-zinc-100 whitespace-pre-wrap">{selectedLog.content}</p>
                         <p className="mt-2 text-xs text-zinc-500">{new Date(selectedLog.createdAt).toLocaleString()}</p>
-
-                        {/* Comments */}
-                        <div className="mt-6">
-                            <h3 className="text-lg font-semibold mb-2">Comments</h3>
-                            {selectedLog.comments.length === 0 ? (
-                                <p className="text-zinc-400 text-sm">No comments yet.</p>
-                            ) : (
-                                selectedLog.comments.map((c) => (
-                                    <div key={c.id} className="border-t border-zinc-800 pt-2 mt-2">
-                                        <p className="text-sm font-semibold">{c.user}</p>
-                                        <p className="text-zinc-300 text-sm">{c.text}</p>
-                                    </div>
-                                ))
-                            )}
-
-                            {/* Add Comment */}
-                            <div className="mt-4 flex gap-2">
-                                <input
-                                    value={newComment}
-                                    onChange={(e) => setNewComment(e.target.value)}
-                                    placeholder="Add a comment..."
-                                    className="flex-1 p-2 rounded-lg bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:ring-1 focus:ring-cyan-500 text-sm"
-                                />
-                                <button
-                                    onClick={handleAddComment}
-                                    className="px-4 py-2 rounded-lg bg-cyan-500 text-white hover:bg-cyan-600 transition text-sm"
-                                >
-                                    Comment
-                                </button>
-                            </div>
-                        </div>
                     </motion.div>
                 </motion.div>
             )}

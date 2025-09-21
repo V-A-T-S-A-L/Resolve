@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.resolve.devlog.resolve_devlog.dto.DevlogsDto;
@@ -64,7 +65,7 @@ public class DevlogsServiceImpl implements DevlogsService{
     public Page<DevlogsDto> getByProject(Long projectId, int page, int size) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Project not found"));
 
-        Page<Devlogs> devlogs = devlogsRepository.findByProject(project, PageRequest.of(page, size));
+        Page<Devlogs> devlogs = devlogsRepository.findByProject(project, PageRequest.of(page, size, Sort.by("createdAt").descending()));
         return devlogs.map(DevlogsMapper::mapToDevlogsDto);
     }
 
