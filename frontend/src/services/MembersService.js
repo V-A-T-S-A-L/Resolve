@@ -13,3 +13,5 @@ export const getRole = (projectId, userId) => axios.get(`http://localhost:8080/a
 export const getRecentProjects = (userId) => axios.get(`http://localhost:8080/api/members/get-recent-projects/${userId}`);
 
 export const updateRole = (memberId, body) => axios.put(`http://localhost:8080/api/members/update/${memberId}`, body);
+
+export const removeMember = (projectId, userId) => axios.delete(`http://localhost:8080/api/members/${projectId}/${userId}`);

@@ -11,7 +11,7 @@ import {
 	MoreVertical,
 } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { GetProjectMembers, updateRole } from "../../services/MembersService";
+import { GetProjectMembers, removeMember, updateRole } from "../../services/MembersService";
 import { formatDate } from "../../services/funtions";
 import { sendReq } from "../../services/JoinRequestService";
 
@@ -70,6 +70,16 @@ export default function MembersTab({ role }) {
 			console.warn("Role updated successfully");
 		}).catch((error) => {
 			console.error("Error updating role", error);
+		});
+	}
+	
+	const handleRemoveUser = (projectId, userId) => {
+		if (!window.confirm("Are you sure you want to remove this member?")) return;
+		removeMember(projectId, userId).then((response) => {
+			setMembers((prevMembers) => prevMembers.filter((m) => m.userId !== userId));
+			console.warn("Member removed successfully");
+		}).catch((error) => {
+			console.error("Error removing member", error);
 		});
 	}
 
@@ -146,7 +156,7 @@ export default function MembersTab({ role }) {
 											{/* Remove option - hide if the member is admin */}
 											{m.role !== "admin" && (
 												<button
-													onClick={() => handleRemoveUser(m.email)}
+													onClick={() => handleRemoveUser(m.projectId, m.userId)}
 													className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-500 transition"
 												>
 													<Trash2 className="h-4 w-4" />
