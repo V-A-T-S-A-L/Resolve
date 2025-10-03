@@ -50,7 +50,6 @@ export default function ProjectDashboard() {
 		{ id: "bugs", label: "Bugs" },
 		{ id: "devlogs", label: "Devlogs" },
 		{ id: "members", label: "Members" },
-		{ id: "activity", label: "Activity" },
 		{ id: "settings", label: "Settings" },
 	];
 
@@ -88,7 +87,6 @@ export default function ProjectDashboard() {
 					{activeTab === "bugs" && <BugsTab role={role} />}
 					{activeTab === "devlogs" && <DevlogsTab role={role} />}
 					{activeTab === "members" && <MembersTab role={role} />}
-					{activeTab === "activity" && <ActivityTab role={role} />}
 					{activeTab === "settings" && <SettingsTab role={role} />}
 				</Suspense>
 			</main>

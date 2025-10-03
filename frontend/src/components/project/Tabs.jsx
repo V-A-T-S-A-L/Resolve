@@ -7,7 +7,6 @@ export default function Tabs({ tabs, activeTab, setActiveTab }) {
     bugs: <Bug size={18} />,
     devlogs : <MessageSquareCode size={18}/>,
     members: <Users size={18} />,
-    activity: <Activity size={18} />,
     settings: <Settings size={18} />,
   };
 
