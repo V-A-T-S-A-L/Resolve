@@ -7,9 +7,11 @@ import {
 	Calendar,
 	X,
 	Send,
+	Trash2,
+	MoreVertical,
 } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { GetProjectMembers } from "../../services/MembersService";
+import { GetProjectMembers, updateRole } from "../../services/MembersService";
 import { formatDate } from "../../services/funtions";
 import { sendReq } from "../../services/JoinRequestService";
 
@@ -54,6 +56,29 @@ export default function MembersTab({ role }) {
 		});
 	};
 
+	const handleRoleChange = (memberId, newRole) => {
+		const body = {
+			role : newRole
+		}
+
+		updateRole(memberId, body).then((response) => {
+			setMembers((prevMembers) =>
+				prevMembers.map((m) =>
+					m.id === memberId ? { ...m, role: newRole } : m
+				)
+			);
+			console.warn("Role updated successfully");
+		}).catch((error) => {
+			console.error("Error updating role", error);
+		});
+	}
+
+	const [openMenu, setOpenMenu] = useState(null); 
+
+	const toggleMenu = (email) => {
+		setOpenMenu((prev) => (prev === email ? null : email));
+	};
+
 	return (
 		<div className="space-y-6">
 			{/* Header */}
@@ -76,18 +101,78 @@ export default function MembersTab({ role }) {
 				{members.map((m) => (
 					<li
 						key={m.email}
-						className="bg-zinc-900/60 rounded-2xl p-5 shadow-md border border-zinc-800 hover:scale-102 hover:border-pink-400/50 transition"
+						className="relative bg-zinc-900/60 rounded-2xl p-5 shadow-md border border-zinc-800 hover:scale-[1.02] hover:border-pink-400/50 transition"
 					>
-						<h3 className="text-lg font-semibold text-zinc-100">{m.userName}</h3>
+						<div className="flex items-center justify-between">
+							<h3 className="text-lg font-semibold text-zinc-100">{m.userName}</h3>
+
+							{/* 3 dots menu - only visible to admin */}
+							{role === "admin" && (
+								<div className="relative">
+									<button
+										onClick={() => toggleMenu(m.email)}
+										className="p-1 rounded-full text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition"
+									>
+										<MoreVertical className="h-4 w-4" />
+									</button>
+
+									{openMenu === m.email && (
+										<div className="absolute right-0 mt-2 w-44 rounded-md bg-zinc-800 border border-zinc-700 shadow-lg z-10">
+											<div className="p-2">
+												<label className="block text-xs text-zinc-400 mb-1">Change Role</label>
+
+												{/* If current member is admin, disable role change */}
+												{m.role === "admin" ? (
+													<select
+														disabled
+														value={m.role}
+														className="w-full bg-zinc-900 border border-zinc-700 rounded-md px-2 py-1 text-xs text-zinc-400 cursor-not-allowed"
+													>
+														<option value="admin">Admin (locked)</option>
+													</select>
+												) : (
+													<select
+														defaultValue={m.role}
+														onChange={(e) => handleRoleChange(m.id, e.target.value)}
+														className="w-full bg-zinc-900 border border-zinc-700 rounded-md px-2 py-1 text-xs text-zinc-200 focus:outline-none focus:ring-1 focus:ring-pink-500"
+													>
+														<option value="viewer">Viewer</option>
+														<option value="contributor">Contributor</option>
+														<option value="manager">Manager</option>
+													</select>
+												)}
+											</div>
+
+											{/* Remove option - hide if the member is admin */}
+											{m.role !== "admin" && (
+												<button
+													onClick={() => handleRemoveUser(m.email)}
+													className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-500 transition"
+												>
+													<Trash2 className="h-4 w-4" />
+													Remove Member
+												</button>
+											)}
+										</div>
+									)}
+								</div>
+							)}
+						</div>
+
 						<div className="mt-2 space-y-2 text-sm text-zinc-300">
-							<p className="flex items-center gap-2">
+							{/* Role */}
+							<div className="flex items-center gap-2">
 								<Briefcase className="h-4 w-4 text-blue-400" />
-								<span>{m.role}</span>
-							</p>
-							<p className="flex items-center gap-2">
+								<span className="capitalize">{m.role}</span>
+							</div>
+
+							{/* Email */}
+							<p className="flex items-center gap-2 break-all">
 								<Mail className="h-4 w-4 text-pink-400" />
 								<span>{m.email}</span>
 							</p>
+
+							{/* Joined */}
 							<p className="flex items-center gap-2">
 								<Calendar className="h-4 w-4 text-blue-300" />
 								<span>Joined: {formatDate(m.joinedAt)}</span>

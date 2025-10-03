@@ -66,9 +66,7 @@ export default function ProjectDashboard() {
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
 			{/* HEADER */}
 			<header className="p-4 border-b border-zinc-800 flex items-center bg-gradient-to-r from-pink-500/10 to-blue-500/10 backdrop-blur-md">
-				<Link to={'/resolve'}>
-					<ChevronLeft className="text-pink-400 mr-3 hover:-translate-x-0.5 transition cursor-pointer" />
-				</Link>
+					<ChevronLeft onClick={() => navigate(-1)} className="text-pink-400 mr-3 hover:-translate-x-0.5 transition cursor-pointer" />
 				<h2 className="text-2xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-fuchsia-400 to-blue-400 drop-shadow-[0_0_10px_rgba(236,72,153,0.8)]">
 					Resolve
 				</h2>

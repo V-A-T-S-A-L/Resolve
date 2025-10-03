@@ -11,3 +11,5 @@ export const getProjectsWhereMember = (userId) => axios.get(`http://localhost:80
 export const getRole = (projectId, userId) => axios.get(`http://localhost:8080/api/members/get-role/${projectId}/${userId}`);
 
 export const getRecentProjects = (userId) => axios.get(`http://localhost:8080/api/members/get-recent-projects/${userId}`);
+
+export const updateRole = (memberId, body) => axios.put(`http://localhost:8080/api/members/update/${memberId}`, body);
