@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, MessageSquareCode, PlusCircle, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageSquareCode, PlusCircle, Trash2, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { createDevlog, getByProject } from "../../services/DevlogsService";
 import { useParams } from "react-router-dom";
@@ -78,6 +78,20 @@ export default function DevlogsTab({ role }) {
                             style={{ height: "100px", overflow: "hidden" }}
                             onClick={() => setSelectedLog(log)}
                         >
+                            {/* Delete Button */}
+                            {(log.userId === userId || role === "admin" || role === "manager") && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // prevent opening the log
+                                        //handleDeleteLog(log.id);
+                                    }}
+                                    className="absolute top-2 right-2 p-1 rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition"
+                                    title="Delete log"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </button>
+                            )}
+
                             <h4 className="text-md font-semibold text-zinc-300">{log.title}</h4>
                             <p className="mt-1 text-xs text-zinc-400">{log.userName}</p>
                             <p className="mt-1 text-xs text-zinc-500">

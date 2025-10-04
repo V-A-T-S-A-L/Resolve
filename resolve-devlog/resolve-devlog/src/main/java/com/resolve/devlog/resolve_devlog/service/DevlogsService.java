@@ -10,5 +10,5 @@ public interface DevlogsService {
     DevlogsDto addDevlog(DevlogsDto devlogsDto);
     Page<DevlogsDto> getByProject(Long projectId, int page, int size);
     DevlogsDto getByProjectAndUser(Long projectId, Long userId);
-    DevlogsDto deleteDevlog(Long id);
+    void deleteDevlog(Long id);
 }

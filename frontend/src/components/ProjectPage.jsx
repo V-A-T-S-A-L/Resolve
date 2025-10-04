@@ -8,7 +8,6 @@ import DevlogsTab from "./project/DevlogsTab";
 const OverviewTab = lazy(() => import("./project/OverviewTab"));
 const BugsTab = lazy(() => import("./project/BugsTab"));
 const MembersTab = lazy(() => import("./project/MembersTab"));
-const ActivityTab = lazy(() => import("./project/ActivityTab"));
 const SettingsTab = lazy(() => import("./project/SettingsTab"));
 
 export default function ProjectDashboard() {

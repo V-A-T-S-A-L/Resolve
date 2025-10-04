@@ -76,9 +76,8 @@ public class DevlogsServiceImpl implements DevlogsService{
     }
 
     @Override
-    public DevlogsDto deleteDevlog(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteDevlog'");
+    public void deleteDevlog(Long id) {
+        Devlogs devlog = devlogsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Devlog not found"));
+        devlogsRepository.delete(devlog);
     }
-
 }
