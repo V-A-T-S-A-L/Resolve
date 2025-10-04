@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, MessageSquareCode, PlusCircle, Trash2, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { createDevlog, getByProject } from "../../services/DevlogsService";
+import { createDevlog, deleteDevlog, getByProject } from "../../services/DevlogsService";
 import { useParams } from "react-router-dom";
 
 export default function DevlogsTab({ role }) {
@@ -49,6 +49,15 @@ export default function DevlogsTab({ role }) {
         })
     };
 
+    const handleDeleteLog = (id) => {
+        const originalLogs = [...devlogs];
+        setDevlogs(devlogs.filter((log) => log.id !== id)); 
+        deleteDevlog(id).catch((error) => {
+            console.error("Error deleting devlog", error);
+            setDevlogs(originalLogs); // revert on error
+        }); 
+    };
+
     return (
         <div className="space-y-8">
             {/* Header */}
@@ -83,7 +92,7 @@ export default function DevlogsTab({ role }) {
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation(); // prevent opening the log
-                                        //handleDeleteLog(log.id);
+                                        handleDeleteLog(log.id);
                                     }}
                                     className="absolute top-2 right-2 p-1 rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition"
                                     title="Delete log"
