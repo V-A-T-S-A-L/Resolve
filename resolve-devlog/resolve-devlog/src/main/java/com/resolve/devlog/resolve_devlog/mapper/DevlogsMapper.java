@@ -11,8 +11,8 @@ public class DevlogsMapper {
     public static DevlogsDto mapToDevlogsDto(Devlogs devlogs) {
         return new DevlogsDto(
             devlogs.getId(),
-            devlogs.getUser().getId(),
             devlogs.getProject().getId(),
+            devlogs.getUser().getId(),
             devlogs.getUser().getName(),
             devlogs.getTitle(),
             devlogs.getContent(),
