@@ -54,7 +54,7 @@ export default function DevlogsTab({ role }) {
         setDevlogs(devlogs.filter((log) => log.id !== id)); 
         deleteDevlog(id).catch((error) => {
             console.error("Error deleting devlog", error);
-            setDevlogs(originalLogs); // revert on error
+            setDevlogs(originalLogs);
         }); 
     };
 
