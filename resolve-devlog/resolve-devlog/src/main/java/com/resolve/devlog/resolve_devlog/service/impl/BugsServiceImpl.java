@@ -3,14 +3,19 @@ package com.resolve.devlog.resolve_devlog.service.impl;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.resolve.devlog.resolve_devlog.dto.BugsDto;
 import com.resolve.devlog.resolve_devlog.entity.Bugs;
+import com.resolve.devlog.resolve_devlog.entity.Devlogs;
 import com.resolve.devlog.resolve_devlog.entity.Project;
 import com.resolve.devlog.resolve_devlog.entity.User;
 import com.resolve.devlog.resolve_devlog.exception.ResourceNotFoundException;
 import com.resolve.devlog.resolve_devlog.mapper.BugsMapper;
+import com.resolve.devlog.resolve_devlog.mapper.DevlogsMapper;
 import com.resolve.devlog.resolve_devlog.repository.BugsRepository;
 import com.resolve.devlog.resolve_devlog.repository.ProjectMembersRepository;
 import com.resolve.devlog.resolve_devlog.repository.ProjectRepository;
@@ -66,5 +71,13 @@ public class BugsServiceImpl implements BugsService {
         bug.setClosedAt(null);
         Bugs savedBug = bugsRepository.save(bug);
         return BugsMapper.mapToBugsDto(savedBug);
+    }
+
+    @Override
+    public Page<BugsDto> getByProject(Long projectId, int page, int size) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+
+        Page<Bugs> bugs = bugsRepository.findByProject(project, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+        return bugs.map(BugsMapper::mapToBugsDto);
     }
 }
