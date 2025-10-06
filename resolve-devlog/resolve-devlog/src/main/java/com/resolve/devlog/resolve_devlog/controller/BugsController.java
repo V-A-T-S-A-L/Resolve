@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,16 @@ public class BugsController {
     public ResponseEntity<?> getByProject(@PathVariable("projectId") Long projectId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         try {
             return ResponseEntity.ok(bugsService.getByProject(projectId, page, size));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<?> deleteBug(@PathVariable("projectId") Long projectId) {
+        try {
+            bugsService.deleteBug(projectId);
+            return ResponseEntity.ok("Bug Deleted Successfully!");
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

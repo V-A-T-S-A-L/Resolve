@@ -80,4 +80,10 @@ public class BugsServiceImpl implements BugsService {
         Page<Bugs> bugs = bugsRepository.findByProject(project, PageRequest.of(page, size, Sort.by("createdAt").descending()));
         return bugs.map(BugsMapper::mapToBugsDto);
     }
+
+    @Override
+    public void deleteBug(Long projectId) {
+        Bugs bug = bugsRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Bug not found"));
+        bugsRepository.delete(bug);
+    }
 }
